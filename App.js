@@ -20,31 +20,31 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   
   const preLoad = async() => {
-      try {
-        await Font.loadAsync({
-          ...Ionicons.font
-        });
-        await Asset.loadAsync(require("./assets/logo.png"));
-        const cache = new InMemoryCache();
-        await persistCache({
-          cache,
-          storage: AsyncStorage,
-        });
-        const client = new ApolloClient({
-          cache,
-          ...apolloClientOptions
-        });
-        const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-        if (!isLoggedIn || isLoggedIn === "false") {
-          setIsLoggedIn(false);
-        } else {
-          setIsLoggedIn(true);
-        }
-        setLoaded(true);
-        setClient(client);
-      } catch (e) {
-        console.log(e);
-      }     
+    try {
+      await Font.loadAsync({
+        ...Ionicons.font
+      });
+      await Asset.loadAsync(require("./assets/logo.png"));
+      const cache = new InMemoryCache();
+      await persistCache({
+        cache,
+        storage: AsyncStorage,
+      });
+      const client = new ApolloClient({
+        cache,
+        ...apolloClientOptions
+      });
+      const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+      if (!isLoggedIn || isLoggedIn === "false") {
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true);
+      }
+      setLoaded(true);
+      setClient(client);
+    } catch (e) {
+      console.log(e);
+    }     
   };
 
   useEffect(() => {
