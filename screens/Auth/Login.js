@@ -14,6 +14,7 @@ const View = styled.View`
 
 export default () => {
     const emailInput = useInput("");
+    const [loading, setLoading] = useState(false);
     const handleLogin = () => {
         const { value } = emailInput;
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -23,6 +24,14 @@ export default () => {
             return Alert.alert("Please write an email");
         } else if(!emailRegex.test(value)){
             return Alert.alert("That email is invalid");
+        }
+        
+        try {
+            setLoading(true);
+        } catch (e){
+            console.log(e);
+        } finally{
+            setLoading(false);
         }
     };
     
@@ -40,6 +49,7 @@ export default () => {
                 <AuthButton
                     onPress={handleLogin}
                     text="Log In"
+                    loading={loading}
                 />
             </View>
         </TouchableWithoutFeedback>
