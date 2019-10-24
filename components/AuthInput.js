@@ -16,27 +16,33 @@ const TextInput = styled.TextInput`
 `;
 
 const AuthInput = ({
+    value,
     onChange,
     placeholder,
-    value,
     keyboardType="default",
-    autoCapitalize="none"
+    autoCapitalize="none",
+    returnKeyType="done",
+    onSubmitEditing = () => null,
+    autoCorrect = ture
 }) => (
     <Container>
         <TextInput 
+            value={value}
             onChangeText={onChange}
             placeholder={placeholder}
-            value={value}
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
+            returnKeyType={returnKeyType}
+            onSubmitEditing={onSubmitEditing}
+            autoCorrect={autoCorrect}
         />
     </Container>
 );
 
 AuthInput.propTypes = {
+    value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
     keyboardType: PropTypes.oneOf([
         "default",
         "number-pad",
@@ -50,7 +56,16 @@ AuthInput.propTypes = {
         "sentences", 
         "words", 
         "characters"
-    ])
+    ]),
+    returnKeyType: PropTypes.oneOf([
+        "done", 
+        "go", 
+        "next", 
+        "search",
+        "send"
+    ]),
+    onSubmitEditing: PropTypes.func,
+    autoCorrect: PropTypes.bool,
 };
 
 export default AuthInput;
