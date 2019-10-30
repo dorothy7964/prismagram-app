@@ -23,7 +23,7 @@ const AuthInput = ({
     autoCapitalize="none",
     returnKeyType="done",
     onSubmitEditing = () => null,
-    autoCorrect = ture
+    autoCorrect = true
 }) => (
     <Container>
         <TextInput 
