@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Alert } from "react-native";
 import { TouchableWithoutFeedback, Keyboard } from "react-native";
+import * as Facebook from 'expo-facebook';
 import { useMutation } from "react-apollo-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
 import AuthButton from "../../components/AuthButton";
@@ -12,6 +13,14 @@ const View = styled.View`
     justify-content: center;
     align-items: center;
     flex: 1;
+`;
+
+const FBContainer = styled.View`
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top-width: 1px;
+    border-color: ${props => props.theme.lightGreyColor};
+    border-style: solid;
 `;
 
 export default ({ navigation }) => {
@@ -61,39 +70,77 @@ export default ({ navigation }) => {
             setLoading(false);
         }
     };
+
+    const fbLogin = async () => {
+        try {
+            setLoading(true);
+            const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+                "466536900623918", 
+                {
+                    permissions: ['public_profile', 'email'],
+                 }
+            );
+            if (type === 'success') {
+                const response = await fetch(
+                    `https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,email`
+                );
+                const { first_name, last_name, email } = await response.json();
+                fNameInput.setValue(first_name);
+                lNameInput.setValue(last_name);
+                emailInput.setValue(email);
+                const [userName] = email.split("@");
+                userNameInput.setValue(userName);
+                setLoading(false);
+            } else {
+                // type === 'cancel'
+            }
+        } catch ({ message }) {
+            alert(`Facebook Login Error: ${message}`);
+        }
+    };
     
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View>
-                <AuthInput
-                    { ...fNameInput }
-                    placeholder="First name"
-                    autoCapitalize="words"
-                />
-                <AuthInput
-                    { ...lNameInput }
-                    placeholder="Last name"
-                    autoCapitalize="words"
-                />
-                <AuthInput
-                    { ...emailInput }
-                    placeholder="Email"
-                    keyboardType="email-address"
-                    returnKeyType="send"
-                    autoCorrect={false}
-                />
-                <AuthInput
-                    { ...userNameInput }
-                    placeholder="User Name"
-                    returnKeyType="send"
-                    autoCorrect={false}
-                />
-                <AuthButton
-                    onPress={handleSignup}
-                    text="Sign Up"
-                    loading={loading}
-                />
-            </View>
-        </TouchableWithoutFeedback>
+        <React.Fragment>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View>
+                    <AuthInput
+                        { ...fNameInput }
+                        placeholder="First name"
+                        autoCapitalize="words"
+                    />
+                    <AuthInput
+                        { ...lNameInput }
+                        placeholder="Last name"
+                        autoCapitalize="words"
+                    />
+                    <AuthInput
+                        { ...emailInput }
+                        placeholder="Email"
+                        keyboardType="email-address"
+                        returnKeyType="send"
+                        autoCorrect={false}
+                    />
+                    <AuthInput
+                        { ...userNameInput }
+                        placeholder="User Name"
+                        returnKeyType="send"
+                        autoCorrect={false}
+                    />
+                    <AuthButton
+                        onPress={handleSignup}
+                        text="Sign Up"
+                        loading={loading}
+                    />
+                    <FBContainer>
+                        <AuthButton
+                            onPress={fbLogin}
+                            text="Connect Facebook"
+                            loading={false}
+                            bgColor={"#2D4DA7"}
+                        />
+                    </FBContainer>
+                </View>
+            </TouchableWithoutFeedback>
+        </React.Fragment>
     );
 };
