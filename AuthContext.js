@@ -8,7 +8,7 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
 
   const logUserIn = async (token) => {
     try {
-      await AsyncStorage.setItem("isLoggeIn", "true");
+      await AsyncStorage.setItem("isLoggedIn", "true");
       await AsyncStorage.setItem("jwt", token);
       setIsLoggedIn(true);
     }catch (e) {
@@ -18,7 +18,7 @@ export const AuthProvider = ({ isLoggedIn: isLoggedInProp, children }) => {
   
   const logUserOut = async () => {
     try {
-      await AsyncStorage.setItem("isLoggeIn", "false");
+      await AsyncStorage.setItem("isLoggedIn", "false");
       setIsLoggedIn(false);
     }catch (e) {
       console.log(e);

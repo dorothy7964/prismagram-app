@@ -1,7 +1,11 @@
-import React from "react";
-import { Image } from "react-native";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Image, Platform } from "react-native";
+import Swiper from "react-native-swiper";
+import { Ionicons } from "@expo/vector-icons";
+import constants from "../constants";
+import styles from "../styles";
 
 const Container = styled.View`
     margin-bottom: 40px;
@@ -27,7 +31,40 @@ const Location = styled.Text`
     font-size: 12px;
 `;
 
-const Post = ({ user, location }) => {
+const IconsContainer = styled.View`
+    flex-direction: row;
+    margin-bottom: 5px;    
+`;
+
+const IconContainer = styled.View`
+    margin-right: 10px;
+`;
+
+const InfoContainer = styled.View`
+    padding: 10px;
+`;
+
+const Caption = styled.Text`
+    margin: 5px 0px;
+`;
+
+const CommentCount = styled.Text`
+    opacity: 0.5;
+    font-size: 13px;
+`;
+
+const Post = ({
+    user, 
+    location, 
+    caption,
+    files = [],
+    comments = [],
+    isLiked: isLikedProp,
+    likeCount: likeCountProp,
+}) => {
+    const [isLiked, setIsLiked] = useState(isLikedProp);
+    const [likeCount, setLikeCount] = useState(likeCountProp);
+
     return (
         <Container>
             <Header>
@@ -44,6 +81,48 @@ const Post = ({ user, location }) => {
                     </HeaderUserContainer>
                 </Touchable>
             </Header>
+            <Swiper
+                showsPagination={false}
+                style={{ height: constants.height / 2.5 }}
+            >
+                {files.map(file => (
+                    <Image 
+                        key={file.id}
+                        source={{ uri: file.url }} 
+                        style={{ width: constants.width, height: constants.height / 2.5 }}
+                    />
+                ))}
+            </Swiper>
+            <InfoContainer>
+                <IconsContainer>
+                    <Touchable>
+                        <IconContainer>
+                            <Ionicons
+                                size={24}
+                                name={Platform.OS === "ios" ? "ios-heart" : "md-heart"}
+                            />
+                        </IconContainer>
+                    </Touchable>
+                    <Touchable>
+                        <IconContainer>
+                            <Ionicons
+                                size={24}
+                                color={styles.blackColor}
+                                name={Platform.OS === "ios" ? "ios-text" : "md-text"}
+                            />
+                        </IconContainer>
+                    </Touchable>
+                </IconsContainer>
+                <Touchable>
+                    <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
+                </Touchable>
+                <Caption>
+                    <Bold>{user.userName}</Bold> {caption}
+                </Caption>
+                <Touchable>
+                    <CommentCount>See all {comments.length} comments</CommentCount>
+                </Touchable>
+            </InfoContainer>
         </Container>
     );
 };
