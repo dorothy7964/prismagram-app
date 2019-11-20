@@ -8,8 +8,6 @@ const Container = styled.TouchableOpacity`
     padding-right: 20px;
 `;
 
-const Text = styled.Text``;
-
 export default withNavigation(({ navigation }) => (
     <Container onPress={() => navigation.navigate("MessageNavigation")}>
         <NavIcon

@@ -11,16 +11,18 @@ import MessagesLink from '../components/MessagesLink';
 import NavIcon from "../components/NavIcon";
 import { stackStyles } from "./config";
 
-const stackFactory = (initalRoute, customConfig) => 
+const stackFactory = (initialRoute, customConfig) => 
     createStackNavigator({
-        InitalRoute: {
-            screen: initalRoute,
-            navigationOptions: { 
-                ...customConfig,
-                headerStyle: { ...stackStyles }
-            },
+        InitialRoute: {
+            screen: initialRoute,
+            navigationOptions: {
+                ...customConfig
+            }
         }
     },{
+        defaultNavigationOptions: {
+            headerStyle: { ...stackStyles }
+        },
         headerLayoutPreset: "center"
     });
 
@@ -41,9 +43,7 @@ export default createBottomTabNavigator({
         }
     },
     Search: {
-        screen: stackFactory(Search, {
-            title: "Search",
-        }),
+        screen: stackFactory(Search),
         navigationOptions: {
             tabBarIcon: ({ focused }) => (
                 <NavIcon

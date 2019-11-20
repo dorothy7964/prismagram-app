@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Image, Platform } from "react-native";
+import { withNavigation } from "react-navigation";
 import Swiper from "react-native-swiper";
 import { useMutation } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
@@ -70,6 +71,7 @@ const Post = ({
     comments = [],
     isLiked: isLikedProp,
     likeCount: likeCountProp,
+    navigation
 }) => {
     const [isLiked, setIsLiked] = useState(isLikedProp);
     const [likeCount, setLikeCount] = useState(likeCountProp);
@@ -92,13 +94,21 @@ const Post = ({
     return (
         <Container>
             <Header>
-                <Touchable>
+                <Touchable
+                   onPress={() =>
+                        navigation.navigate("UserDetail", { userName: user.userName})
+                    }
+                >
                     <Image 
                         source={{ uri: user.avatar }} 
                         style={{ height: 40, width: 40, borderRadius: 20 }}
                     />
                 </Touchable>
-                <Touchable>
+                <Touchable
+                   onPress={() =>
+                        navigation.navigate("UserDetail", { userName: user.userName})
+                    }
+                >
                     <HeaderUserContainer>
                         <Bold>{user.userName}</Bold>
                         <Location>{location}</Location>
@@ -190,4 +200,4 @@ Post.propTypes = {
     createdAt: PropTypes.string.isRequired
 };
 
-export default Post;
+export default withNavigation(Post);
