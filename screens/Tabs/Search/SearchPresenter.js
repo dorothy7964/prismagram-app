@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { ScrollView, RefreshControl } from "react-native";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 
@@ -18,16 +19,29 @@ export const SEARCH = gql`
 `;
 
 const SearchPresenter = ({ term, shouldFetch }) => {
-    const { data, loading } = useQuery(SEARCH, {
+    const [refreshing, setRefreshing] = useState(false);
+    const { data, loading, refetch } = useQuery(SEARCH, {
         variables: { term },
         skip: !shouldFetch,
     });
+    const onRefresh = async () => {
+        try {
+            setRefreshing(true);
+            await refetch({ variables: { term } });
+        } catch (e) {
+        } finally {
+            setRefreshing(false);
+        }
+    };
     console.log(data, loading);
 
     return (
-        <View>
-            <Text>HeLLo</Text>
-        </View>
+        <ScrollView
+            refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            }
+        >
+        </ScrollView>
     );
 };
 
