@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Platform } from "react-native";
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Detail from "../screens/Detail";
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
@@ -17,6 +18,12 @@ const stackFactory = (initialRoute, customConfig) =>
             screen: initialRoute,
             navigationOptions: {
                 ...customConfig
+            }
+        },
+        Detail: {
+            screen: Detail,
+            navigationOptions: {
+                title: "Photo"
             }
         }
     },{
@@ -43,7 +50,9 @@ export default createBottomTabNavigator({
         }
     },
     Search: {
-        screen: stackFactory(Search),
+        screen: stackFactory(Search, {
+            headerBackTitle: null
+        }),
         navigationOptions: {
             tabBarIcon: ({ focused }) => (
                 <NavIcon
