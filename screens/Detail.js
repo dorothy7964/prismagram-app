@@ -1,13 +1,51 @@
 import React from "react";
-import styled from "styled-components";
 import { ScrollView } from "react-native";
+import { gql } from "apollo-boost";
+import { useQuery } from "react-apollo-hooks";
+import Loader from "../components/Loader";
+import Post from "../components/Post";
 
-const Text = styled.Text``;
+const POST_DETAIL = gql`
+    query seeFullPost($id: String!) {
+        id
+        location
+        caption
+        user {
+            id
+            avatar
+            userName
+        }
+        files {
+            id
+            url
+        }
+        likeCount
+        isLiked
+        comments {
+            id
+            text
+            user {
+                id
+                userName
+            }
+        }
+        createdAt
+    }
+`;
+
 
 export default ({ navigation }) => {
+    const { data, loading } = useQuery(POST_DETAIL, {
+        variables: { id: navigation.getParam("id") }
+    });
+    
     return (
         <ScrollView>
-            <Text>I should fetch for: {navigation.getParm("id")}</Text>
+            {loading ? (
+                <Loader />
+            ) : (
+                data && data.seeFullPost && <Post {...data.seeFullPost} />
+            )}
         </ScrollView>
     );
 };
