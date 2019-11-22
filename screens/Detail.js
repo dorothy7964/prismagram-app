@@ -2,35 +2,15 @@ import React from "react";
 import { ScrollView } from "react-native";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
+import { POST_FRAGMENT } from "../fragments";
 import Loader from "../components/Loader";
 import Post from "../components/Post";
 
 const POST_DETAIL = gql`
     query seeFullPost($id: String!) {
-        id
-        location
-        caption
-        user {
-            id
-            avatar
-            userName
-        }
-        files {
-            id
-            url
-        }
-        likeCount
-        isLiked
-        comments {
-            id
-            text
-            user {
-                id
-                userName
-            }
-        }
-        createdAt
+        ...PostParts
     }
+    ${POST_FRAGMENT}
 `;
 
 
