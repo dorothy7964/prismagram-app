@@ -8,11 +8,12 @@ import Post from "../components/Post";
 
 const POST_DETAIL = gql`
     query seeFullPost($id: String!) {
-        ...PostParts
+        seeFullPost(id: $id) {
+            ...PostParts
+        }
     }
     ${POST_FRAGMENT}
 `;
-
 
 export default ({ navigation }) => {
     const { data, loading } = useQuery(POST_DETAIL, {

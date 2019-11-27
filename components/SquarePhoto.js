@@ -13,7 +13,7 @@ const SquarePhoto = ({ id, files = [], navigation }) => (
     </TouchableOpacity>
 );
 
-Post.propTypes = {
+SquarePhoto.propTypes = {
     id: PropTypes.string.isRequired,
     files: PropTypes.arrayOf(
         PropTypes.shape({
