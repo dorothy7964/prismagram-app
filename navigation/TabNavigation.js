@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Detail from "../screens/Detail";
+import UserDetail from "../screens/UserDetail";
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
@@ -11,6 +12,7 @@ import Profile from "../screens/Tabs/Profile";
 import MessagesLink from '../components/MessagesLink';
 import NavIcon from "../components/NavIcon";
 import { stackStyles } from "./config";
+import styles from "../styles";
 
 const stackFactory = (initialRoute, customConfig) => 
     createStackNavigator({
@@ -25,9 +27,17 @@ const stackFactory = (initialRoute, customConfig) =>
             navigationOptions: {
                 title: "Photo"
             }
+        },
+        UserDetail: {
+          screen: UserDetail,
+          navigationOptions: ({ navigation }) => ({
+            title: navigation.getParam("userName")
+          })
         }
     },{
         defaultNavigationOptions: {
+            headerBackTitle: null,
+            headerTintColor: styles.blackColor,
             headerStyle: { ...stackStyles }
         },
         headerLayoutPreset: "center"
