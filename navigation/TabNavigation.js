@@ -11,8 +11,8 @@ import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
 import MessagesLink from '../components/MessagesLink';
 import NavIcon from "../components/NavIcon";
-import { stackStyles } from "./config";
 import styles from "../styles";
+import { stackStyles } from "./config";
 
 const stackFactory = (initialRoute, customConfig) => 
     createStackNavigator({

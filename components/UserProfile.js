@@ -1,8 +1,135 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import { View, Image, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Platform } from "@unimodules/core";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+import styles from "../styles";
+import constants from "../constants";
+import SquarePhoto from "./SquarePhoto";
+import Post from "./Post";
 
-const UserProfile = ({}) => null;
+const ProfileHeader = styled.View`
+    padding: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const HeaderColumn = styled.View``;
+
+const ProfileStats = styled.View`
+    flex-direction: row;
+`;
+
+const Stat = styled.View`
+    align-items: center;
+    margin-left: 40px;
+`;
+
+const Bold = styled.Text`
+    font-weight: 600;
+`;
+
+const StatName = styled.Text`
+    margin-top: 5px;
+    font-size: 12px;
+    color: ${styles.darkGreyColor};
+`;
+
+const ProfileMeta = styled.View`
+    margin-top: 10px;
+    padding-horizontal: 20px;
+`;
+
+const Bio = styled.Text``;
+
+const ButtonContainer = styled.View`
+    padding-vertical: 5px;
+    border: 1px solid ${styles.lightGreyColor};
+    flex-direction: row;
+    margin-top: 30px;
+`;
+
+const Button = styled.View`
+    width: ${constants.width / 2};
+    align-items: center;
+`;
+
+const SquareContainer = styled.View`
+    flex-direction: row;
+    flex-wrap: wrap;
+`;
+
+const UserProfile = ({ 
+    avatar,
+    postsCount,
+    followersCount,
+    followingCount,
+    fullName,
+    bio,
+    posts
+}) => {
+    const [isGrid, setIsGrid] = useState(true);
+    const toggleGrid = () => setIsGrid(i => !i);
+
+    return (
+        <View>
+            <ProfileHeader>
+                <Image
+                    style={{ height: 80, width: 80, borderRadius: 40 }}
+                    source={{ uri: avatar }}
+                />
+                <HeaderColumn>
+                    <ProfileStats>
+                        <Stat>
+                            <Bold>{postsCount}</Bold>
+                            <StatName>Posts</StatName>
+                        </Stat>
+                        <Stat>
+                            <Bold>{followersCount}</Bold>
+                            <StatName>Followers</StatName>
+                        </Stat>
+                        <Stat>
+                            <Bold>{followingCount}</Bold>
+                            <StatName>Following</StatName>
+                        </Stat>
+                    </ProfileStats>
+                </HeaderColumn>
+            </ProfileHeader>
+            <ProfileMeta>
+                <Bold>{fullName}</Bold>
+                <Bio>{bio}</Bio>
+            </ProfileMeta>
+            <ButtonContainer>
+                <TouchableOpacity onPress={toggleGrid}>
+                    <Button>
+                        <Ionicons
+                            color={isGrid ? styles.black : styles.darkGreyColor}
+                            size={32} 
+                            name={Platform.OS === "ios" ? "ios-grid" : "md-grid"}
+                        />
+                    </Button>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleGrid}>
+                    <Button>
+                        <Ionicons
+                            color={!isGrid ? styles.black : styles.darkGreyColor}
+                            size={32} 
+                            name={Platform.OS === "ios" ? "ios-list" : "md-list"}
+                        />
+                    </Button>
+                </TouchableOpacity>
+            </ButtonContainer>
+            <SquareContainer>
+                {posts &&
+                    posts.map(p => (isGrid ? <SquarePhoto key={p.id} {...p} /> : null))}
+            </SquareContainer>
+            {posts && posts.map(p => (isGrid ? null : <Post key={p.id} {...p} />))}
+        </View>
+    );
+};
+    
 
 UserProfile.propTypes = {
     id: PropTypes.string.isRequired,
