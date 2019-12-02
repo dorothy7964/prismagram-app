@@ -40,10 +40,15 @@ export default createStackNavigator(
         Tabs: {
             screen: PhotoTabs,
             navigationOptions: {
-                header:  null
-            }
+                title: "Choose Photo",
+            }   
         },
-        UploadPhoto,
+        Upload: {
+            screen: UploadPhoto,
+            navigationOptions: {
+                title: "Upload Photo",
+            }   
+        }
     },{
         defaultNavigationOptions: {
             headerStyle: {
