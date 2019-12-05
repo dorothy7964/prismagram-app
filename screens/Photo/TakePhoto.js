@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
@@ -13,12 +13,24 @@ const View = styled.View`
     flex: 1;
 `;
 
-const Text = styled.Text``;
+const Button = styled.View`
+    width: 70px;
+    height: 70px;
+    border-radius: 40px;
+    border: 10px solid ${styles.lightGreyColor};
+`;
 
 export default () => {
+    const cameraRef = useRef();
     const [loading, setLoading] = useState(true);
     const [hasPermission, setHasPermission] = useState(false);
     const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+
+    const takePhoto = async() => {
+        const { uri } = await cameraRef.current.takePictureAsync({
+            quality: 1
+        });
+    };
 
     const askPermission = async () => {
         try {
@@ -53,22 +65,30 @@ export default () => {
             ) : hasPermission ? (
                 <React.Fragment>
                     <Camera 
+                        ref={cameraRef}
+                        type={cameraType}
                         style={{
                             width:constants.width,
                             height:constants.height / 2,
                             justifyContent: "flex-end",
                             padding: 15
                         }}
-                    />
-                    <TouchableOpacity onPress={toggleType}>
-                        <Ionicons 
-                            name={Platform.OS === "ios" 
-                                ? "ios-reverse-camera" 
-                                : "md-reverse-camera"
-                            } 
-                            size={28} 
-                            color={styles.blackColor}/>
-                    </TouchableOpacity>
+                    >
+                        <TouchableOpacity onPress={toggleType}>
+                            <Ionicons 
+                                name={Platform.OS === "ios" 
+                                    ? "ios-reverse-camera" 
+                                    : "md-reverse-camera"
+                                } 
+                                size={28} 
+                                color={styles.blackColor}/>
+                        </TouchableOpacity>
+                    </Camera>
+                    <View>
+                        <TouchableOpacity onPress={takePhoto}>
+                            <Button />
+                        </TouchableOpacity>
+                    </View>
                 </React.Fragment>
             ) : null}
         </View>

@@ -10,8 +10,6 @@ const View = styled.View`
     flex: 1;
 `;
 
-const Text = styled.Text``;
-
 export default () => {
     const [loading, setLoading] = useState(true);
     const [hasPermission, setHasPermission] = useState(false);
