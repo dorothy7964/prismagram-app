@@ -7,16 +7,16 @@ import { stackStyles } from './config';
 import styles from "../styles";
 
 const PhotoTabs = createMaterialTopTabNavigator({
-    Select: {
-        screen: SelectPhoto,
-        navigationOptions: {
-            tabBarLabel: "Select"
-        }
-    },
     Take: {
         screen: TakePhoto,
         navigationOptions: {
             tabBarLabel: "Take"
+        }
+    },
+    Select: {
+        screen: SelectPhoto,
+        navigationOptions: {
+            tabBarLabel: "Select"
         }
     }
 }, {
@@ -54,6 +54,7 @@ export default createStackNavigator(
             headerStyle: {
                 ...stackStyles
             }   
-        }
+        },
+        headerLayoutPreset: "center"
     }
 );
