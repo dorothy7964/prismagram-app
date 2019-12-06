@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Permissions from "expo-permissions";
+import * as MediaLibrary from 'expo-media-library';
 import { Camera } from "expo-camera";
 import { Ionicons } from '@expo/vector-icons';
 import { Platform } from "@unimodules/core";
@@ -11,6 +12,8 @@ import styles from "../../styles";
 
 const View = styled.View`
     flex: 1;
+    justify-content: center;
+    align-items: center;
 `;
 
 const Button = styled.View`
@@ -22,14 +25,26 @@ const Button = styled.View`
 
 export default () => {
     const cameraRef = useRef();
+    const [canTakePhoto, setCanTakePhoto] = useState(true);
     const [loading, setLoading] = useState(true);
     const [hasPermission, setHasPermission] = useState(false);
     const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
 
     const takePhoto = async() => {
-        const { uri } = await cameraRef.current.takePictureAsync({
-            quality: 1
-        });
+        if(!canTakePhoto){
+            return;
+        }
+
+        try {
+            setCanTakePhoto(false);
+            const { uri } = await cameraRef.current.takePictureAsync({
+                quality: 1
+            });
+            const asset = await MediaLibrary.createAssetAsync(uri);
+        } catch (e) {
+            console.log(e);
+            setCanTakePhoto(true);
+        }
     };
 
     const askPermission = async () => {
@@ -85,7 +100,7 @@ export default () => {
                         </TouchableOpacity>
                     </Camera>
                     <View>
-                        <TouchableOpacity onPress={takePhoto}>
+                        <TouchableOpacity onPress={takePhoto} disabled={!canTakePhoto}>
                             <Button />
                         </TouchableOpacity>
                     </View>
