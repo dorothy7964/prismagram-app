@@ -53,7 +53,8 @@ export default createStackNavigator(
         defaultNavigationOptions: {
             headerStyle: {
                 ...stackStyles
-            }   
+            },
+            headerTintColor: styles.blackColor   
         },
         headerLayoutPreset: "center"
     }
