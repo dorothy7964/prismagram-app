@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity, Platform } from "react-native";
 import * as Permissions from "expo-permissions";
 import * as MediaLibrary from 'expo-media-library';
 import { Camera } from "expo-camera";
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from "@unimodules/core";
 import styled from "styled-components";
 import Loader from "../../components/Loader";
 import constants from "../../constants";
@@ -24,11 +23,11 @@ const Button = styled.View`
 `;
 
 export default ({ navigation }) => {
-    const cameraRef = useRef();
-    const [canTakePhoto, setCanTakePhoto] = useState(true);
     const [loading, setLoading] = useState(true);
     const [hasPermission, setHasPermission] = useState(false);
+    const [canTakePhoto, setCanTakePhoto] = useState(true);
     const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+    const cameraRef = useRef();
 
     const takePhoto = async() => {
         if(!canTakePhoto){

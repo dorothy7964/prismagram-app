@@ -45,7 +45,7 @@ export default ({ navigation }) => {
             setSelected(firstPhoto);
             setAllPhotos(assets);
         } catch (e) {
-             console.log(e);
+            console.log(e);
         } finally {
             setLoading(false);
         }
@@ -54,7 +54,7 @@ export default ({ navigation }) => {
     const askPermission = async () => {
         try {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-            if(status === "granted"){
+            if (status === "granted"){
                 setHasPermission(true);
                 getPhotos();
             }
@@ -72,9 +72,9 @@ export default ({ navigation }) => {
         askPermission();
     }, []);
 
-    retrun (
+    return (
         <View>
-            {loading? (
+            {loading ? (
                 <Loader />
             ) : (
                 <View>
@@ -101,6 +101,7 @@ export default ({ navigation }) => {
                                         onPress={() => changeSelected(photo)}
                                     >
                                         <Image
+                                            key={photo.id}
                                             source={{ uri: photo.uri }}
                                             style={{
                                                 width: constants.width / 3,
@@ -111,8 +112,8 @@ export default ({ navigation }) => {
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
-                        </React.Fragment>
-                ) : null}
+                        </React.Fragment>    
+                    ) : null}
                 </View>
             )}
         </View>
