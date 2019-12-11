@@ -59,13 +59,13 @@ export default ({ navigation }) => {
         });
         try {
             const { 
-                data: { path } 
+                data: { location } 
             } = await axios.post("http://192.168.56.1:4000/api/upload", formData, {
                 headers: {
                     "content-type": "multipart/form-data"
                 }
             });
-            setFileUrl(path);
+            setFileUrl(location);
         } catch (e) {
             Alert.alert("Cant upload", "Try later"); 
         }
