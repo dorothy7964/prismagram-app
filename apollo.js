@@ -1,5 +1,5 @@
 const options = {
-    uri: "http://192.168.56.1:4000"
+    uri: "https://prisma-gram-backend.herokuapp.com/"
 };
 
 export default options;
