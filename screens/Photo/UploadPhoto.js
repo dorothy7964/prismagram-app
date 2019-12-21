@@ -76,7 +76,7 @@ export default ({ navigation }) => {
             setIsLoading(true);
             const { 
                 data: { location } 
-            } = await axios.post("http://192.168.56.1:4000/api/upload", formData, {
+            } = await axios.post("https://prisma-gram-backend.herokuapp.com/api/upload", formData, {
                 headers: {
                     "content-type": "multipart/form-data"
                 }
